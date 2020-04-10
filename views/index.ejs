@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>User Form</title>
+</head>
+<body>
+    <form name="myForm" onsubmit="return validateForm()" method="post">
+        First Name: <input type="text" name="name" required>
+    </br>
+        Email: <input type="text" name="email" required>
+    </br>
+        Password: <input type="password" name="password" required>
+    </br>
+        <input type="submit" value="Submit" >
+    </form>
+    <h1 id="result"></h1>
+
+<script src="https://www.google.com/recaptcha/api.js?render=6LemOugUAAAAAHwMmaVkDgbCvZWhDKGI3yL_GalC"></script>
+
+<script>
+    var baseUrl = 'http://localhost:4000/';
+    var showResult = function(data){
+        document.getElementById('result').innerHTML = data;
+    }
+    var captchaFunction = function(data){
+        grecaptcha.ready(function() {
+            grecaptcha.execute('6LemOugUAAAAAHwMmaVkDgbCvZWhDKGI3yL_GalC').then(function(token) {
+                let userData = {
+                "name": data.name,
+                "email": data.email,
+                "password":data.password,
+                "captchaId": token
+                }
+                userAction(baseUrl+'user/submitFormViaCaptcha', userData);
+            });
+        });
+    }
+    var userAction = function (url, userData) {
+        fetch(url, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                method: 'post',
+                body: JSON.stringify(userData)
+            })
+            .then(
+                response => response.text()
+            )
+            .then(
+                text => {
+                    text = JSON.parse(text);
+                    if(text.isCaptchaRequired){
+                        captchaFunction(userData)
+                    }else{
+                        let message = text.message ? text.message : "some error happend";
+                        showResult(message);
+                    }
+                }
+            )
+            .catch(error => showResult(error));    
+    }
+    function validateForm() {
+        var name = document.forms["myForm"]["name"].value;
+        var email = document.forms["myForm"]["email"].value;
+        var password = document.forms["myForm"]["password"].value;
+        var firstNamePattren = /^[A-Za-z]+$/;
+        var  emailPattren = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+        var passwordPattren = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/
+        if(!name.match(firstNamePattren)){
+            alert('firstName is not valid');
+            return false
+        }
+        if(!email.match(emailPattren)){
+            alert('email is not valid');
+            return false
+        }
+        if(!password.match(passwordPattren)){
+            alert('password length should between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter');
+            return false
+        }
+        
+        let userData = {
+            "name": name,
+            "email": email,
+            "password":password,
+            }
+            userAction(baseUrl+'user/submitForm', userData);
+        return false
+    }
+</script>
+
+</body>
+</html> 
