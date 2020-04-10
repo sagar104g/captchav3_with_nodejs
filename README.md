@@ -1,7 +1,7 @@
 REQUIREMENTS:
-1.node 10.16.0+.
-2.mongodb 4.0+.
-3.google Captcha v3 API keys.
+1. node 10.16.0+.
+2. mongodb 4.0+.
+3. google Captcha v3 API keys.
 
 THINGS TO REMEMBER:
 1. mongoDB should be password protected.
