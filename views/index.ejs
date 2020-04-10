@@ -15,7 +15,7 @@
     </form>
     <h1 id="result"></h1>
 
-<script src="https://www.google.com/recaptcha/api.js?render=6LemOugUAAAAAHwMmaVkDgbCvZWhDKGI3yL_GalC"></script>
+<script src="https://www.google.com/recaptcha/api.js?render=CLIENT_KEY"></script>
 
 <script>
     var baseUrl = 'http://localhost:4000/';
@@ -24,7 +24,7 @@
     }
     var captchaFunction = function(data){
         grecaptcha.ready(function() {
-            grecaptcha.execute('6LemOugUAAAAAHwMmaVkDgbCvZWhDKGI3yL_GalC').then(function(token) {
+            grecaptcha.execute('CLIENT_KEY').then(function(token) {
                 let userData = {
                 "name": data.name,
                 "email": data.email,

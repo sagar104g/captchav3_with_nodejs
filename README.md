@@ -14,5 +14,6 @@ SETUP GUIDE:
 1. setup config.js file in config folder with the help of sample_config.js
 2. botScore in config file is used for comparison the score given by google captcha 0.0 is most likely bot and 1.0 is most likely human.
 3. mongoDb should in running state.
+4. update index.ejs in views folder with captchav3 client side key (replace CLIENT_KEY with your client keys)
 
 NOTE:- this repo. is tested on ubuntu 18.04 system and crome  Version 81.0.4044.92 (Official Build) (64-bit)
